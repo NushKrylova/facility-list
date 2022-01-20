@@ -5,16 +5,18 @@ interface FacilityCardProps {
   name: string;
   type: string;
   address: string;
-  onClick: (id: string) => void;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export const FacilityCard: FC<FacilityCardProps> = ({ id, name, type, address, onClick }) => {
+export const FacilityCard: FC<FacilityCardProps> = ({ id, name, type, address, onEdit, onDelete }) => {
   return (
     <div style={{ borderStyle: "solid" }}>
       <p>{name}</p>
       <p>{type}</p>
       <p>Address: {address}</p>
-      <button onClick={() => onClick(id)}>Edit</button>
+      <button onClick={() => onEdit(id)}>Edit</button>
+      <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   );
 };

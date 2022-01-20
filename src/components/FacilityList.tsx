@@ -1,23 +1,33 @@
 import { FC, useEffect, useState } from "react";
-import { editFacility, getFacilities } from "../api/facilities";
+import { deleteFacility, editFacility, getFacilities } from "../api/facilities";
 import { Facility } from "../types";
+import { DeleteFacility } from "./DeleteFacility";
 import { FacilityCard } from "./FacilityCard";
 import { UpdateFacility } from "./UpdateFacility";
 
 export const FacilityList: FC = () => {
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
   const [facilities, setFacilities] = useState<Facility[]>([]);
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [updateFacilityIsOpen, setUpdatedFacilityIsOpen] = useState<boolean>(false);
+  const [deleteFacilityIsOpen, setDeleteFacilityIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getFacilities().then((result) => setFacilities(result));
   }, []);
 
-  function handleClick(id: string) {
+  function handleOnEdit(id: string) {
     const facility = facilities.find((facility) => facility.id === id);
     if (facility) {
       setSelectedFacility(facility);
-      setModalIsOpen(true);
+      setUpdatedFacilityIsOpen(true);
+    }
+  }
+
+  function handleOnDelete(id: string) {
+    const facility = facilities.find((facility) => facility.id === id);
+    if (facility) {
+      setSelectedFacility(facility);
+      setDeleteFacilityIsOpen(true);
     }
   }
 
@@ -31,7 +41,20 @@ export const FacilityList: FC = () => {
         setFacilities(facilitiesCopy);
       }
     }
-    setModalIsOpen(false);
+    setUpdatedFacilityIsOpen(false);
+  }
+
+  async function handleDelete(id: string) {
+    await deleteFacility(id);
+    if (selectedFacility) {
+      const facilityIndex = facilities.indexOf(selectedFacility);
+      if (facilityIndex >= 0) {
+        const facilitiesCopy = [...facilities];
+        facilitiesCopy.splice(facilityIndex, 1);
+        setFacilities(facilitiesCopy);
+      }
+    }
+    setDeleteFacilityIsOpen(false);
   }
 
   return (
@@ -48,16 +71,26 @@ export const FacilityList: FC = () => {
             name={facility.name}
             type={facility.type}
             address={facility.address}
-            onClick={handleClick}
+            onEdit={handleOnEdit}
+            onDelete={handleOnDelete}
           />
         ))
       )}
 
-      {modalIsOpen && selectedFacility ? (
+      {updateFacilityIsOpen && selectedFacility ? (
         <UpdateFacility
           selectedFacility={selectedFacility}
-          handleCancel={() => setModalIsOpen(false)}
+          handleCancel={() => setUpdatedFacilityIsOpen(false)}
           handleSave={handleSave}
+        />
+      ) : null}
+
+      {deleteFacilityIsOpen && selectedFacility ? (
+        <DeleteFacility
+          selectedFacilityId={selectedFacility.id}
+          selectedFacilityName={selectedFacility.name}
+          handleCancel={() => setDeleteFacilityIsOpen(false)}
+          handleDelete={handleDelete}
         />
       ) : null}
     </>

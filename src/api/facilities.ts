@@ -27,3 +27,20 @@ export const editFacility = (updatedFacility: Facility): Promise<void> =>
       reject(new Error(`Facility with id ${updatedFacility.id} not found`));
     }, 1000);
   });
+
+export const deleteFacility = (facilityToDeleteId: string): Promise<void> =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const facilities: Facility[] = JSON.parse(localStorage.getItem("facilities") || "[]");
+      const facilityIndex = facilities.findIndex((facility) => facility.id === facilityToDeleteId);
+
+      if (facilityIndex >= 0) {
+        const facilitiesCopy = [...facilities];
+        facilitiesCopy.splice(facilityIndex, 1);
+        localStorage.setItem("facilities", JSON.stringify(facilitiesCopy));
+        resolve();
+        return;
+      }
+      reject(new Error(`Facility with id ${facilityToDeleteId} not found`));
+    }, 1000);
+  });
