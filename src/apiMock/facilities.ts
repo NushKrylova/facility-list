@@ -4,7 +4,7 @@ export let facilitiesDataMock: Facility[] = [
   {
     id: "1",
     createdAt: "Sun, 19 Jan 2020 20:30:20 GMT",
-    name: "simgolf",
+    name: "Simgolf",
     type: Type.indoor,
     address: "Hvidkildevej 64 2400 København Denmark",
   },

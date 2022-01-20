@@ -1,4 +1,9 @@
 import { FC } from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 interface FacilityCardProps {
   id: string;
@@ -11,12 +16,24 @@ interface FacilityCardProps {
 
 export const FacilityCard: FC<FacilityCardProps> = ({ id, name, type, address, onEdit, onDelete }) => {
   return (
-    <div style={{ borderStyle: "solid" }}>
-      <p>{name}</p>
-      <p>{type}</p>
-      <p>Address: {address}</p>
-      <button onClick={() => onEdit(id)}>Edit</button>
-      <button onClick={() => onDelete(id)}>Delete</button>
-    </div>
+    <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography variant="h5">{name}</Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary" gutterBottom>
+          {type}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary">
+          Address: {address}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={() => onEdit(id)}>
+          Edit
+        </Button>
+        <Button size="small" onClick={() => onDelete(id)}>
+          Delete
+        </Button>
+      </CardActions>
+    </Card>
   );
 };

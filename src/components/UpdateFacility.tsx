@@ -1,6 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
 import { Facility, Type } from "../types";
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 interface UpdateFacilityProps {
   selectedFacility: Facility;
   handleCancel: () => void;
@@ -18,33 +28,51 @@ export const UpdateFacility: FC<UpdateFacilityProps> = ({ selectedFacility, hand
   }, [selectedFacility.name, selectedFacility.type, selectedFacility.address]);
 
   return (
-    <div style={{ borderStyle: "solid" }}>
-      <p>Edit Information</p>
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-
-      <input
-        type="radio"
-        id="range"
-        name="type"
-        value="range"
-        checked={type === Type.range}
-        onChange={(e) => setType(e.target.value as Type)}
-      />
-      <label htmlFor="range">Range</label>
-
-      <input
-        type="radio"
-        id={"indoor"}
-        name="type"
-        value="indoor"
-        checked={type === Type.indoor}
-        onChange={(e) => setType(e.target.value as Type)}
-      />
-      <label htmlFor="indoor">Indoor</label>
-
-      <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
-      <button onClick={handleCancel}>Cancel</button>
-      <button onClick={() => handleSave({ ...selectedFacility, name, type, address })}>Save</button>
-    </div>
+    <Dialog open onClose={handleCancel}>
+      <DialogTitle>Edit Information</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Facility name"
+          type="text"
+          fullWidth
+          variant="standard"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <FormControl>
+          <FormLabel id="facility-type">Gender</FormLabel>
+          <RadioGroup row aria-labelledby="facility-type" name="facility-type">
+            <FormControlLabel
+              value="indoor"
+              control={<Radio checked={type === Type.indoor} onChange={(e) => setType(e.target.value as Type)} />}
+              label="Indoor"
+            />
+            <FormControlLabel
+              value="range"
+              control={<Radio checked={type === Type.range} onChange={(e) => setType(e.target.value as Type)} />}
+              label="Range"
+            />
+          </RadioGroup>
+        </FormControl>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="address"
+          label="address"
+          type="text"
+          fullWidth
+          variant="standard"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={() => handleSave({ ...selectedFacility, name, type, address })}>Save</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
