@@ -1,13 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import { Facility, Type } from "../types";
 
-interface ModalProps {
-  text: string;
+interface UpdateFacilityProps {
   selectedFacility: Facility;
   handleCancel: () => void;
   handleSave: (updatedFacility: Facility) => void;
 }
-export const Modal: FC<ModalProps> = ({ text, selectedFacility, handleCancel, handleSave }) => {
+export const UpdateFacility: FC<UpdateFacilityProps> = ({ selectedFacility, handleCancel, handleSave }) => {
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<Type>(Type.indoor);
   const [address, setAddress] = useState("");
@@ -20,7 +19,7 @@ export const Modal: FC<ModalProps> = ({ text, selectedFacility, handleCancel, ha
 
   return (
     <div style={{ borderStyle: "solid" }}>
-      <p>{text}</p>
+      <p>Edit Information</p>
       <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
       <input

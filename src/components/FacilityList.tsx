@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { editFacility, getFacilities } from "../api/facilities";
 import { Facility } from "../types";
 import { FacilityCard } from "./FacilityCard";
-import { Modal } from "./Modal";
+import { UpdateFacility } from "./UpdateFacility";
 
 export const FacilityList: FC = () => {
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
@@ -54,8 +54,7 @@ export const FacilityList: FC = () => {
       )}
 
       {modalIsOpen && selectedFacility ? (
-        <Modal
-          text={"Edit Information"}
+        <UpdateFacility
           selectedFacility={selectedFacility}
           handleCancel={() => setModalIsOpen(false)}
           handleSave={handleSave}
